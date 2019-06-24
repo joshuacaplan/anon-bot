@@ -28,7 +28,14 @@ class Reply(commands.Cog):
             c.execute('INSERT INTO anon_messages VALUES (null,?,?,?,?,?)', data)
             conn.commit()
 
-            await anon.send(f'Reply from {thread_id}:\n{message}\n Use `!reply {thread_id} <msg>` to respond')
+            embed = discord.Embed(
+                title="Your message was replied to!", color=0x267d28,
+                description=f'Use `!reply {thread_id} <msg>` to respond')
+            embed.add_field(
+                name='Thread ID:', value=thread_id, inline=True)
+            embed.add_field(
+                name='Message:', value=message, inline=True)
+            await ctx.send(embed=embed)
             await user.send('Sent! :mailbox_with_mail:')
         except AttributeError:
             await ctx.send(f'Unknown message thread!')

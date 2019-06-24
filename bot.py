@@ -1,3 +1,5 @@
+from subprocess import Popen
+
 import discord
 from discord.ext import commands
 from environs import Env
@@ -6,10 +8,13 @@ import os
 from random import randint
 
 try:
-    os.environ['discord']
+    discord_api = os.environ['discord']
+    my_user_id = 0
 except KeyError:
     env = Env()  # reads from .env file
     env.read_env()
+    my_user_id = int(os.environ['my_user_id'])
+    discord_api = os.environ['discord']
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
@@ -37,7 +42,8 @@ async def dm(ctx):
     # if not found, create a random_number for user and add it to database
     sender_id = ''.join((str(randint(0, 9)) for _ in range(10)))
     # add receiver id to db
-    await user.send(f'You got an anonymous message from {sender_id}:\n{message}\nUse `.reply {sender_id} <msg>` to reply')
+    await user.send(
+        f'You got an anonymous message from {sender_id}:\n{message}\nUse `.reply {sender_id} <msg>` to reply')
 
     # add sender to db
     # add receiver to db
@@ -63,4 +69,24 @@ async def dm(ctx):
             await user.send(f'{sender_id} said:\n{reply_content}\n Use `.reply {sender_id} <msg>` to reply')
 
 
-bot.run(os.environ['discord'])
+@bot.command()
+def ping(ctx):
+    ctx.send('pong')
+
+
+@bot.command()
+async def restart(ctx):
+    if ctx.author.id == my_user_id:
+        print('Restarting')
+        await bot.change_presence(activity=discord.Game('Restarting...'))
+        Popen('python bot.py')
+        await bot.logout()
+
+
+@bot.command(name='exit', aliases=['quit'])
+async def _exit(ctx):
+    if ctx.author.id == my_user_id:
+        await bot.change_presence(activity=discord.Game('Exiting...'))
+        await bot.logout()
+
+bot.run(discord_api)

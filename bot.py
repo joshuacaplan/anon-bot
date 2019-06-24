@@ -43,7 +43,7 @@ def format_cog(cogs_dir):
 if __name__ == "__main__":
     import traceback
     cogs_dir = "cogs"
-    
+
     for cog in format_cog(cogs_dir):
         try:
             bot.load_extension(cog)

@@ -70,7 +70,7 @@ async def dm(ctx):
 
 
 @bot.command()
-def ping(ctx):
+async def ping(ctx):
     ctx.send('pong')
 
 

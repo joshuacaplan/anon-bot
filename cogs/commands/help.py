@@ -11,7 +11,7 @@ class Help(commands.Cog):
         embed.add_field(name='dm', value='Sends a direct message to a user', inline = True)
         embed.add_field(name='Usage:', value ="!dm 'name' 'message'", inline = True)
         embed.add_field(name='reply', value='Replies a message you received', inline = True)
-        embed.add_field(name='Usage', value=".reply'id' 'message'", inline = True)
+        embed.add_field(name='Usage', value=".reply 'id/username' 'message'", inline = True)
         await ctx.send(embed=embed)
 
 def setup(bot):

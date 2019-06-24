@@ -26,81 +26,29 @@ bot.remove_command("help")
 
 # bot.command()
 
+def format_cog(cogs_dir):
+    import os
+    found_cogs = []
+    formatted_cogs = []
+    for path, dirs, files in os.walk("cogs"):
+        for f in files:
+            if f.endswith(".py"):
+                found_cogs.append(os.path.join(path, f))
+    for extension in found_cogs:
+        newextension = extension.replace(".py", "")
+        newextension = newextension.replace("\\", ".")
+        formatted_cogs.append(newextension)
+    return formatted_cogs
 
-@bot.event
-async def on_ready():
-    print('Logged In')
-    await bot.change_presence(activity=discord.Game('!dm to use'))
-
-
-@bot.command()
-async def dm(ctx):
-    try:
-        stuff = ctx.message.content.split(' ')
-        user, message = stuff[1], ' '.join(stuff[2:])
-        user = discord.utils.get(bot.users, name=user)
-        anon = ctx.author
-        # check if receiver is in db for a random number
-        # if not found, create a random_number for user and add it to database
-        sender_id = ''.join((str(randint(0, 9)) for _ in range(10)))
-        # add receiver id to db
-        await user.send(
-            f'You got an anonymous message from {sender_id}:\n{message}\nUse `.reply {sender_id} <msg>` to reply')
-    except AttributeError:
-        await ctx.send(f'A user with that name could not be found.')
-
-    # add sender to db
-    # add receiver to db
-    # create a random number for the sender and receiver so
-    # Start new DM thread if none exists
-
-    def check(m):
-        content = m.content
-        if content.startswith('.reply') and type(m.channel) == discord.DMChannel:
-            user_id = content.split()[1]
-            if user_id == sender_id or discord.utils.get(bot.users, name=user_id):
-                return True
-        return False
-        # in DMChannel, user is receiver or sender
-        #
-
-    while True:
-        msg = await bot.wait_for('message', check=check)
-        reply_content = ' '.join(msg.content.split()[2:])
-        if msg.author == user:
-            await anon.send(f'{user} said:\n{reply_content}\nUse `.reply {user} <msg>` to reply`')
-        else:
-            await user.send(f'{sender_id} said:\n{reply_content}\n Use `.reply {sender_id} <msg>` to reply')
-
-
-@bot.command()
-async def ping(ctx):
-    ctx.send('pong')
-
-
-@bot.command()
-async def restart(ctx):
-    if ctx.author.id == my_user_id:
-        print('Restarting')
-        await bot.change_presence(activity=discord.Game('Restarting...'))
-        Popen('python bot.py')
-        await bot.logout()
-
-
-@bot.command(name='exit', aliases=['quit'])
-async def _exit(ctx):
-    if ctx.author.id == my_user_id:
-        await bot.change_presence(activity=discord.Game('Exiting...'))
-        await bot.logout()
-
-@bot.command(name='help')
-async def _help(ctx):
-    embed = discord.Embed(title="Showing All Commands:", color=0x267d28)
-    embed.add_field(name='dm', value='Sends a direct message to a user', inline = True)
-    embed.add_field(name='Usage:', value ="!dm 'name' 'message'", inline = True)
-    embed.add_field(name='reply', value='Replies a message you received', inline = True)
-    embed.add_field(name='Usage', value=".reply'id' 'message'", inline = True)
-    await ctx.send(embed=embed)
-
+if __name__ == "__main__":
+    import traceback
+    cogs_dir = "cogs"
+    
+    for cog in format_cog(cogs_dir):
+        try:
+            bot.load_extension(cog)
+        except (discord.ClientException, ModuleNotFoundError):
+            print(f'Failed to load extension {cog}.')
+            traceback.print_exc()
 
 bot.run(discord_api)

@@ -5,8 +5,11 @@ import logging
 import os
 from random import randint
 
-env = Env()  # reads from .env file
-env.read_env()
+try:
+    os.environ['discord']
+except KeyError:
+    env = Env()  # reads from .env file
+    env.read_env()
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)

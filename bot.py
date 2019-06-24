@@ -32,6 +32,7 @@ async def dm(ctx):
     user, message = stuff[1], ' '.join(stuff[2:])
     user = discord.utils.get(bot.users, name=user)
     anon = ctx.author
+    # error handle if user not found
     # check if receiver is in db for a random number
     # if not found, create a random_number for user and add it to database
     sender_id = ''.join((str(randint(0, 9)) for _ in range(10)))
@@ -55,9 +56,9 @@ async def dm(ctx):
 
     while True:
         msg = await bot.wait_for('message', check=check)
-        reply_content = msg.content.split()[2:]
+        reply_content = ' '.join(msg.content.split()[2:])
         if msg.author == user:
-            await anon.send(f'{user} said:\n{reply_content}\nUse `.reply <user> <msg>` to reply`')
+            await anon.send(f'{user} said:\n{reply_content}\nUse `.reply {user} <msg>` to reply`')
         else:
             await user.send(f'{sender_id} said:\n{reply_content}\n Use `.reply {sender_id} <msg>` to reply')
 

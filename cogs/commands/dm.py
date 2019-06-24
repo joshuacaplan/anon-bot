@@ -19,46 +19,29 @@ class DM(commands.Cog):
             user = discord.utils.get(self.bot.users, name=user)
             anon = ctx.author
             receiver = user.id
+            anon_sender = ctx.author.id
 
-            # generates sender_id and checks if it exists
+            # generates thread_id and checks if it exists
             while True:
                 try:
-                    sender_id = ''.join((str(randint(0, 9))
+                    thread_id = ''.join((str(randint(0, 9))
                                          for _ in range(10)))
                     c.execute(
-                        f"SELECT receiver FROM anon_messages WHERE sender={sender_id}")
+                        f"SELECT receiver FROM anon_messages WHERE thread_id={thread_id}")
                     # if no rows exist, break out of regen loop
-                    senderData = c.fetchone()[0]
+                    thread_data = c.fetchone()[0]
                 except TypeError:
                     break
 
             # insert data
-            data = ("NEW_THREAD", sender_id, receiver, message)
-            c.execute('INSERT INTO anon_messages VALUES (null,?,?,?,?)', data)
+            data = ("NEW_THREAD", thread_id, anon_sender, receiver, message)
+            c.execute('INSERT INTO anon_messages VALUES (null,?,?,?,?,?)', data)
             conn.commit()
 
-            await user.send(f'You got an anonymous message from {sender_id}:\n{message}\nUse `.reply {sender_id} <msg>` to reply')
+            await user.send(f'You got an anonymous message! Thread: {thread_id}\nMessage:\n{message}\nUse `!reply {thread_id} <msg>` to respond')
             await anon.send('Sent! :mailbox_with_mail:')
         except AttributeError:
             await ctx.send(f'A user with that name could not be found.')
-
-        def check(m):
-            content = m.content
-            if content.startswith('.reply') and type(m.channel) == discord.DMChannel:
-                user_id = content.split()[1]
-                if user_id == sender_id or discord.utils.get(self.bot.users, name=user_id):
-                    return True
-            return False
-            # in DMChannel, user is receiver or sender
-            #
-
-        while True:
-            msg = await self.bot.wait_for('message', check=check)
-            reply_content = ' '.join(msg.content.split()[2:])
-            if msg.author == user:
-                await anon.send(f'{user} said:\n{reply_content}\nUse `.reply {user} <msg>` to reply`')
-            else:
-                await user.send(f'{sender_id} said:\n{reply_content}\n Use `.reply {sender_id} <msg>` to reply')
         conn.close()
 
 

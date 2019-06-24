@@ -17,7 +17,7 @@ class OnReady(commands.Cog):
         conn = sqlite3.connect('anon.db')
         c = conn.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS anon_messages
-                (event_id INTEGER PRIMARY KEY AUTOINCREMENT, messageType TEXT, sender INTEGER, receiver INTEGER, message TEXT)''')
+                (event_id INTEGER PRIMARY KEY AUTOINCREMENT, messageType TEXT, thread_id INTEGER, anon_sender INTEGER, receiver INTEGER, message TEXT)''')
         conn.commit()
         conn.close()
 

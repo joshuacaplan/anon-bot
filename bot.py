@@ -28,7 +28,7 @@ bot = commands.Bot(command_prefix='!')
 @bot.event
 async def on_ready():
     print('Logged In')
-    await bot.change_presence(activity=discord.Game('Messenger (!)'))
+    await bot.change_presence(activity=discord.Game('!dm to use'))
 
 
 @bot.command()

@@ -52,10 +52,11 @@ async def dm(ctx):
 
     while True:
         msg = await bot.wait_for('message', check=check)
+        reply_content = msg.content.split()[2:]
         if msg.author == user:
-            await anon.send(f'{user} said:\n{msg.content}\nUse `.reply <user> <msg>` to reply`')
+            await anon.send(f'{user} said:\n{reply_content}\nUse `.reply <user> <msg>` to reply`')
         else:
-            await user.send(f'{sender_id} said:\n{msg.content}\n Use `.reply {sender_id} <msg>` to reply')
+            await user.send(f'{sender_id} said:\n{reply_content}\n Use `.reply {sender_id} <msg>` to reply')
 
 
 bot.run(os.environ['discord'])

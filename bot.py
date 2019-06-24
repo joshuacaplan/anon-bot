@@ -22,6 +22,8 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 bot = commands.Bot(command_prefix='!')
+bot.remove_command("help")
+
 # bot.command()
 
 
@@ -33,17 +35,19 @@ async def on_ready():
 
 @bot.command()
 async def dm(ctx):
-    stuff = ctx.message.content.split(' ')
-    user, message = stuff[1], ' '.join(stuff[2:])
-    user = discord.utils.get(bot.users, name=user)
-    anon = ctx.author
-    # error handle if user not found
-    # check if receiver is in db for a random number
-    # if not found, create a random_number for user and add it to database
-    sender_id = ''.join((str(randint(0, 9)) for _ in range(10)))
-    # add receiver id to db
-    await user.send(
-        f'You got an anonymous message from {sender_id}:\n{message}\nUse `.reply {sender_id} <msg>` to reply')
+    try:
+        stuff = ctx.message.content.split(' ')
+        user, message = stuff[1], ' '.join(stuff[2:])
+        user = discord.utils.get(bot.users, name=user)
+        anon = ctx.author
+        # check if receiver is in db for a random number
+        # if not found, create a random_number for user and add it to database
+        sender_id = ''.join((str(randint(0, 9)) for _ in range(10)))
+        # add receiver id to db
+        await user.send(
+            f'You got an anonymous message from {sender_id}:\n{message}\nUse `.reply {sender_id} <msg>` to reply')
+    except AttributeError:
+        await ctx.send(f'A user with that name could not be found.')
 
     # add sender to db
     # add receiver to db
@@ -88,5 +92,15 @@ async def _exit(ctx):
     if ctx.author.id == my_user_id:
         await bot.change_presence(activity=discord.Game('Exiting...'))
         await bot.logout()
+
+@bot.command(name='help')
+async def _help(ctx):
+    embed = discord.Embed(title="Showing All Commands:", color=0x267d28)
+    embed.add_field(name='dm', value='Sends a direct message to a user', inline = True)
+    embed.add_field(name='Usage:', value ="!dm 'name' 'message'", inline = True)
+    embed.add_field(name='reply', value='Replies a message you received', inline = True)
+    embed.add_field(name='Usage', value=".reply'id' 'message'", inline = True)
+    await ctx.send(embed=embed)
+
 
 bot.run(discord_api)

@@ -1,3 +1,7 @@
 .idea
+.vscode
 .env
+anon.db
+anon.db-journal
 discord.log
+__pycache__

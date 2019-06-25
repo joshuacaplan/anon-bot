@@ -49,7 +49,7 @@ class DM(commands.Cog):
 
                 embed = discord.Embed(
                     title='Anonymous message received!', color=0x267d28,
-                    description=f'Use `!reply {thread_id} <msg>` to respond')
+                    description=f'Reply with `!reply {thread_id} <msg>`')
                 embed.add_field(
                     name='Thread ID:', value=thread_id, inline=True)
                 embed.add_field(

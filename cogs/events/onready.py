@@ -11,7 +11,7 @@ class OnReady(commands.Cog):
     async def on_ready(self):
         print(
             f'Logged in as {self.bot.user.name}#{self.bot.user.discriminator} (ID: {self.bot.user.id})')
-        await self.bot.change_presence(activity=discord.Game('!dm to use'))
+        await self.bot.change_presence(activity=discord.Game('DM me !dm <username> <message>'))
 
         # setup database connection
         conn = sqlite3.connect('anon.db')

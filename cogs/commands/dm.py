@@ -9,7 +9,7 @@ class DM(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=['DM', 'Dm', 'msg', 'MSG'])
     async def dm(self, ctx):
         if type(ctx.channel) != discord.DMChannel:
             await ctx.send(f'!dm can only be used in a DM with me!')
@@ -32,7 +32,7 @@ class DM(commands.Cog):
                         thread_id = ''.join((str(randint(0, 9))
                                              for _ in range(10)))
                         c.execute(
-                            f"SELECT receiver FROM threads WHERE thread_id={thread_id}")
+                            f'SELECT receiver FROM threads WHERE thread_id={thread_id}')
                         # if no rows exist, break out of regen loop
                         thread_data = c.fetchone()[0]
                     except TypeError:
@@ -48,7 +48,7 @@ class DM(commands.Cog):
                 conn.commit()
 
                 embed = discord.Embed(
-                    title="Anonymous message inbound!", color=0x267d28,
+                    title='Anonymous message inbound!', color=0x267d28,
                     description=f'Use `!reply {thread_id} <msg>` to respond')
                 embed.add_field(
                     name='Thread ID:', value=thread_id, inline=True)

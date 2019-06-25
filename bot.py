@@ -22,11 +22,11 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 bot = commands.Bot(command_prefix='!')
-bot.remove_command("help")
+bot.remove_command('help')
 
 # bot.command()
 
-def format_cog(cogs_dir):
+def format_cog(cogs_dir='cogs'):
     import os
     found_cogs = []
     for path, dirs, files in os.walk('cogs'):
@@ -36,11 +36,9 @@ def format_cog(cogs_dir):
     formatted_cogs = [cog.replace('.py', '').replace('\\', '.').replace('/', '.') for cog in found_cogs]
     return formatted_cogs
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     import traceback
-    cogs_dir = "cogs"
-
-    for cog in format_cog(cogs_dir):
+    for cog in format_cog():
         try:
             bot.load_extension(cog)
         except (discord.ClientException, ModuleNotFoundError):

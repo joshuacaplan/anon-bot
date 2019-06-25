@@ -8,7 +8,7 @@ class Help(commands.Cog):
 
     @commands.command(name='help')
     async def _help(self, ctx):
-        embed = discord.Embed(title="Showing All Commands:", color=0x267d28)
+        embed = discord.Embed(title='Showing All Commands:', color=0x267d28)
         embed.add_field(
             name='dm', value='Sends a direct message to a user', inline=True)
         embed.add_field(

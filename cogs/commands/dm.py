@@ -12,7 +12,7 @@ class DM(commands.Cog):
     @commands.command()
     async def dm(self, ctx):
         if type(ctx.channel) != discord.DMChannel:
-            await ctx.send(f"Send your message to the bots DMs!")
+            await ctx.send(f"Send your message to my DM!")
             await ctx.message.delete()
         else:
             try:

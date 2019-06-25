@@ -18,13 +18,21 @@ class ReportChannel(commands.Cog):
             channel = args[1].replace('<', '').replace(
                 '#', '').replace('>', '')
 
-            data = (ctx.guild.id, channel)
-            c.execute(
-                'INSERT INTO guildOptions VALUES (null,?,?)', data)
+            # check if report_channel_id is None, insert data as needed.
+            try:
+                report_channel = c.execute(
+                    f'SELECT report_channel_id FROM guildOptions WHERE guild_id={ctx.guild.id}').fetchone()[0]
+
+                c.execute(
+                    'UPDATE guildOptions SET report_channel_id = ? WHERE guild_id = ?', (channel, ctx.guild.id))
+            except TypeError:
+                data = (ctx.guild.id, channel)
+                c.execute('INSERT INTO guildOptions VALUES (null,?,?)', data)
+
             conn.commit()
             await ctx.send(f'Reports will be sent to <#{channel}>')
         except AttributeError:
-            await ctx.send(f'Unknown message thread!')
+            await ctx.send(f'Unknown channel.')
         conn.close()
 
 

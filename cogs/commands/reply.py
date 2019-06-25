@@ -45,7 +45,7 @@ class Reply(commands.Cog):
                 embed.add_field(
                     name='Message:', value=message, inline=True)
                 await receiver.send(embed=embed)
-
+                await ctx.send('Reply sent! :mailbox_with_mail:')
             except AttributeError:
                 await ctx.send(f'Unknown message thread!')
             conn.close()

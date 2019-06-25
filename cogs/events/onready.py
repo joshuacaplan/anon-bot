@@ -24,6 +24,8 @@ class OnReady(commands.Cog):
                 (report_id INTEGER PRIMARY KEY AUTOINCREMENT, thread_id INTEGER, anon_sender INTEGER, reporter INTEGER, details TEXT)''')
         c.execute('''CREATE TABLE IF NOT EXISTS guildOptions
                 (event_id INTEGER PRIMARY KEY AUTOINCREMENT, guild_id INTEGER, report_channel_id INTEGER)''')
+        c.execute('''CREATE TABLE IF NOT EXISTS userOptions
+                (event_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, allow_anon_messages BOOLEAN)''')
         conn.commit()
         conn.close()
 

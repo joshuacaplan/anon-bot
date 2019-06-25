@@ -1,2 +1,3 @@
-discord
-environs
+git+https://github.com/Rapptz/discord.py@rewrite
+async-timeout==3.0.1
+environs==4.2.0

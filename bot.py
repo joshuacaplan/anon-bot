@@ -27,14 +27,11 @@ bot.remove_command('help')
 # bot.command()
 
 def format_cogs(cogs_dir='cogs'):
-    import os
-    found_cogs = []
-    for path, dirs, files in os.walk('cogs'):
-        for f in files:
-            if f.endswith('.py'):
-                found_cogs.append(os.path.join(path, f))
+    from glob import glob
+    found_cogs = glob(f'{cogs_dir}/**/*.py', recursive=True)
     formatted_cogs = [cog.replace('.py', '').replace('\\', '.').replace('/', '.') for cog in found_cogs]
     return formatted_cogs
+
 
 if __name__ == '__main__':
     import traceback

@@ -1,8 +1,6 @@
 from subprocess import Popen
-
 import discord
 from discord.ext import commands
-from environs import Env
 import logging
 import os
 from random import randint
@@ -11,6 +9,7 @@ try:
     discord_api = os.environ['discord']
     my_user_id = 0
 except KeyError:
+    from environs import Env
     env = Env()  # reads from .env file
     env.read_env()
     my_user_id = int(os.environ['my_user_id'])

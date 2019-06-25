@@ -11,26 +11,30 @@ class Reply(commands.Cog):
 
     @commands.command()
     async def reply(self, ctx):
-        if type(ctx.channel) != discord.DMChannel:
+        if type(ctx.channel) is not discord.DMChannel:
             await ctx.send(f"Send your message to the bots DMs!")
             await ctx.message.delete()
         else:
             try:
                 conn = sqlite3.connect('anon.db')
                 c = conn.cursor()
-                stuff = ctx.message.content.split(' ')
-                thread_id, message = stuff[1], ' '.join(stuff[2:])
+                args = ctx.message.content.split(' ')
+                thread_id, message = args[1], ' '.join(args[2:])
                 user = ctx.author
-                receiver = user.id
-                anon_id = c.execute(
-                    f"SELECT anon_sender FROM anon_messages WHERE thread_id={thread_id}").fetchone()[0]
-                anon = discord.utils.get(self.bot.users, id=anon_id)
+                receiver_id = c.execute(
+                    f"SELECT receiver FROM threads WHERE thread_id={thread_id}").fetchone()[0]
+                if receiver_id == user.id:
+                    receiver_id = c.execute(
+                        f"SELECT anon_sender FROM threads WHERE thread_id={thread_id}").fetchone()[0]
+                receiver = discord.utils.get(self.bot.users, id=receiver_id)
+                message_id = c.execute(
+                    f"SELECT max(message_id) FROM messages WHERE thread_id={thread_id}").fetchone()[0]
 
                 # insert data
                 # storing replies isn't necessary, but its there if needed
-                data = ("REPLY", thread_id, anon_id, receiver, message)
+                message_data = (thread_id, message_id + 1, user.id, message)
                 c.execute(
-                    'INSERT INTO anon_messages VALUES (null,?,?,?,?,?)', data)
+                    'INSERT INTO messages VALUES (?,?,?,?)', message_data)
                 conn.commit()
 
                 embed = discord.Embed(
@@ -40,8 +44,8 @@ class Reply(commands.Cog):
                     name='Thread ID:', value=thread_id, inline=True)
                 embed.add_field(
                     name='Message:', value=message, inline=True)
-                await ctx.send(embed=embed)
-                await user.send('Sent! :mailbox_with_mail:')
+                await receiver.send(embed=embed)
+
             except AttributeError:
                 await ctx.send(f'Unknown message thread!')
             conn.close()

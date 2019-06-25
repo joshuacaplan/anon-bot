@@ -16,8 +16,14 @@ class OnReady(commands.Cog):
         # setup database connection
         conn = sqlite3.connect('anon.db')
         c = conn.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS anon_messages
-                (event_id INTEGER PRIMARY KEY AUTOINCREMENT, messageType TEXT, thread_id INTEGER, anon_sender INTEGER, receiver INTEGER, message TEXT)''')
+        c.execute('''CREATE TABLE IF NOT EXISTS threads
+                (event_id INTEGER PRIMARY KEY AUTOINCREMENT, thread_id INTEGER, anon_sender INTEGER, receiver INTEGER)''')
+        c.execute('''CREATE TABLE IF NOT EXISTS messages
+                (thread_id INTEGER, message_id INTEGER, sender INTEGER, message TEXT)''')
+        c.execute('''CREATE TABLE IF NOT EXISTS reports
+                (report_id INTEGER PRIMARY KEY AUTOINCREMENT, thread_id INTEGER, anon_sender INTEGER, reporter INTEGER, details TEXT)''')
+        c.execute('''CREATE TABLE IF NOT EXISTS guildOptions
+                (event_id INTEGER PRIMARY KEY AUTOINCREMENT, guild_id INTEGER, report_channel_id INTEGER)''')
         conn.commit()
         conn.close()
 

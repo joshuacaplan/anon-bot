@@ -16,7 +16,15 @@ class Help(commands.Cog):
         embed.add_field(
             name='reply', value='Replies a message you received', inline=True)
         embed.add_field(
-            name='Usage', value=".reply 'id/username' 'message'", inline=True)
+            name='Usage', value="!reply 'id/username' 'message'", inline=True)
+        embed.add_field(
+            name='report', value='Sends message info to mods', inline=True)
+        embed.add_field(
+            name='Usage', value="!report 'thread id' '<optional> details'", inline=True)
+        embed.add_field(
+            name='reportchannel', value='Sets channel which all reports go to', inline=True)
+        embed.add_field(
+            name='Usage', value="!reportchannel '#channel'", inline=True)
         await ctx.send(embed=embed)
 
 

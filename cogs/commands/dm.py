@@ -12,7 +12,7 @@ class DM(commands.Cog):
     @commands.command()
     async def dm(self, ctx):
         if type(ctx.channel) != discord.DMChannel:
-            await ctx.send(f"Send your message to my DM!")
+            await ctx.send(f'!dm can only be used in a DM with me!')
             await ctx.message.delete()
         else:
             try:

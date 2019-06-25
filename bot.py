@@ -29,15 +29,11 @@ bot.remove_command("help")
 def format_cog(cogs_dir):
     import os
     found_cogs = []
-    formatted_cogs = []
-    for path, dirs, files in os.walk("cogs"):
+    for path, dirs, files in os.walk('cogs'):
         for f in files:
-            if f.endswith(".py"):
+            if f.endswith('.py'):
                 found_cogs.append(os.path.join(path, f))
-    for extension in found_cogs:
-        newextension = extension.replace(".py", "")
-        newextension = newextension.replace("\\", ".")
-        formatted_cogs.append(newextension)
+    formatted_cogs = [cog.replace('.py', '').replace('\\', '.').replace('/', '.') for cog in found_cogs]
     return formatted_cogs
 
 if __name__ == "__main__":

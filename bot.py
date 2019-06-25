@@ -26,7 +26,7 @@ bot.remove_command('help')
 
 # bot.command()
 
-def format_cog(cogs_dir='cogs'):
+def format_cogs(cogs_dir='cogs'):
     import os
     found_cogs = []
     for path, dirs, files in os.walk('cogs'):
@@ -38,7 +38,7 @@ def format_cog(cogs_dir='cogs'):
 
 if __name__ == '__main__':
     import traceback
-    for cog in format_cog():
+    for cog in format_cogs():
         try:
             bot.load_extension(cog)
         except (discord.ClientException, ModuleNotFoundError):

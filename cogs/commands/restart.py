@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from subprocess import Popen
 import os
+from Globals import *
 
 my_user_id = int(os.environ['my_user_id']) or 0
 
@@ -12,9 +13,10 @@ class Restart(commands.Cog):
 
     @commands.command()
     async def restart(self, ctx):
-        if ctx.author.id == my_user_id:
-            print('Restarting')
+        if ctx.author.id == my_user_id or ctx.author.id in bot_owners:
+            print('Restarting Bot')
             await self.bot.change_presence(activity=discord.Game('Restarting...'))
+            await ctx.send('Restarting...')
             Popen('python bot.py')
             await self.bot.logout()
 

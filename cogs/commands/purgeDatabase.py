@@ -12,7 +12,7 @@ class PurgeDatabase(commands.Cog):
 
     @commands.command(aliases=['purgedb'])
     async def purgedatabase(self, ctx):
-        if ctx.author.id == my_user_id:
+        if ctx.author.id == my_user_id or ctx.author.id in bot_owners:
             try:
                 os.remove('anon.db')
                 await ctx.send('Database removed! Restarting now..')

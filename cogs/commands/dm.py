@@ -29,7 +29,7 @@ class DM(commands.Cog):
                 # generates thread_id and checks if it exists
                 while True:
                     try:
-                        thread_id = ''.join((str(randint(0, 9))
+                        thread_id = ''.join((str(randint(0, 7))
                                              for _ in range(10)))
                         c.execute(
                             f'SELECT receiver FROM threads WHERE thread_id={thread_id}')
@@ -46,7 +46,7 @@ class DM(commands.Cog):
                 c.execute(
                     'INSERT INTO messages VALUES (?,?,?,?)', message_data)
                 conn.commit()
-
+                # embed
                 embed = discord.Embed(
                     title='Anonymous message received!', color=0x267d28,
                     description=f'Reply with `!reply {thread_id} <msg>`')

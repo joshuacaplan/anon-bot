@@ -41,7 +41,7 @@ if __name__ == '__main__':
         try:
             bot.load_extension(cog)
         except (discord.ClientException, ModuleNotFoundError):
-            print(f'Failed to load extension {cog}.')
+            print(f'Failed to load extension {cog}')
             traceback.print_exc()
 
 bot.run(discord_api)

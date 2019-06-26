@@ -88,3 +88,4 @@ class DM(commands.Cog):
 
 def setup(bot):
     bot.add_cog(DM(bot))
+    

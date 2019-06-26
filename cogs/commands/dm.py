@@ -70,7 +70,7 @@ class DM(commands.Cog):
                         embed.add_field(name='Thread ID:', value=thread_id, inline=True)
                         embed.add_field(name='Message:', value=message, inline=True)
                         await user.send(embed=embed)
-                        await ctx.send(f'Sent! :mailbox_with_mail:\nThread ID: {thread_id}')
+                        await ctx.send(f'Message sent to {user}! :mailbox_with_mail:\nThread ID: {thread_id}')
                     else:
                         await ctx.send(f'{user.name} is not accepting anonymous messages at this time.')
                 else:

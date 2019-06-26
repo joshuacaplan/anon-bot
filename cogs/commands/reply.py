@@ -23,6 +23,7 @@ class Reply(commands.Cog):
                 user = ctx.author
                 receiver_id = c.execute(
                     f'SELECT receiver FROM threads WHERE thread_id={thread_id}').fetchone()[0]
+                embed_title = f'{user} replied to your message!' if receiver_id == user.id else 'You got another message'
                 if receiver_id == user.id:
                     receiver_id = c.execute(
                         f'SELECT anon_sender FROM threads WHERE thread_id={thread_id}').fetchone()[0]
@@ -36,8 +37,6 @@ class Reply(commands.Cog):
                 c.execute(
                     'INSERT INTO messages VALUES (?,?,?,?)', message_data)
                 conn.commit()
-
-                embed_title = f'{user} replied to your message!' if receiver_id == user.id else 'You got another message'
                 embed = discord.Embed(
                     title=embed_title, color=0x267d28,
                     description=f'Use `!reply {thread_id} <msg>` to respond')

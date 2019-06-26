@@ -26,11 +26,8 @@ class OnReady(commands.Cog):
                 (event_id INTEGER PRIMARY KEY AUTOINCREMENT, guild_id INTEGER, report_channel_id INTEGER)''')
         c.execute('''CREATE TABLE IF NOT EXISTS userOptions
                 (event_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, allow_anon_messages BOOLEAN)''')
-<<<<<<< Updated upstream
-=======
         c.execute('''CREATE TABLE IF NOT EXISTS guildFilters
                 (words TEXT, server_id INTEGER)''')
->>>>>>> Stashed changes
         conn.commit()
         conn.close()
 

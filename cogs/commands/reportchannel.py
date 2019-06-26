@@ -15,10 +15,9 @@ class ReportChannel(commands.Cog):
             conn = sqlite3.connect('anon.db')
             c = conn.cursor()
             args = ctx.message.content.split(' ')
-            if len(args > 1):
+            if len(args) > 1:
 
-                channel = args[1].replace('<', '').replace(
-                    '#', '').replace('>', '')
+                channel = args[1].replace('<', '').replace('#', '').replace('>', '')
 
                 # check if report_channel_id is None, insert data as needed.
                 try:
@@ -34,7 +33,7 @@ class ReportChannel(commands.Cog):
                 conn.commit()
                 await ctx.send(f'Reports will be sent to <#{channel}>')
             else:
-                await ctx.send("You must have at least 1 argument in your command! Refer to !help for more information.")
+                await ctx.send('You must have at least 1 argument in your command! Refer to !help for more information.')
         except AttributeError:
             await ctx.send(f'Unknown channel.')
         conn.close()

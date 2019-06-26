@@ -15,10 +15,8 @@ class Report(commands.Cog):
             conn = sqlite3.connect('anon.db')
             c = conn.cursor()
             args = ctx.message.content.split(' ')
-            if len(args > 1):
-
-                thread_id, details = args[1], ' '.join(
-                    args[2:]) or 'No details given'
+            if len(args) > 1:
+                thread_id, details = args[1], ' '.join(args[2:]) or 'No details given'
                 author = ctx.author
                 reporter = author.id
                 anon_id = c.execute(

@@ -23,27 +23,23 @@ class DM(commands.Cog):
 
                 if len(args) > 2:
                     user, message = args[1], ' '.join(args[2:])
-                    # checks if user id was supplied
+                    # checks if a user id was supplied
                     if user.isdigit():
                         user = discord.utils.get(self.bot.users, id=user)
                     else:
                         # nope, user is a string. check if it includes a discriminator for accuracy
-                        # remove any @ if there is one..
+                        # remove any @ if there is one
                         user = user.replace('@', '')
-                        if '#' in user:
-                            user = discord.utils.get(self.bot.users, name=user[:-5], discriminator=user[-4:])
-                        else:
-                            user = discord.utils.get(self.bot.users, name=user)
+                        if '#' in user: user = discord.utils.get(self.bot.users, name=user[:-5], discriminator=user[-4:])
+                        else: user = discord.utils.get(self.bot.users, name=user)
                             # search for user by name, returns first match, people can use at disgrestion
 
                     # check if user has anonymous messaging enabled
-                    try:
-                        user_setting = c.execute(
-                            f'SELECT allow_anon_messages FROM userOptions WHERE user_id={user.id}').fetchone()[0]
+                    try: user_setting = c.execute(f'SELECT allow_anon_messages FROM userOptions WHERE user_id={user.id}').fetchone()[0]
                     except TypeError:
-                        user_setting = 0
+                        user_setting = 1
 
-                    if user_setting is 1:
+                    if user_setting:
                         receiver = user.id
                         anon_sender = ctx.author.id
                         message_id = 1
@@ -64,19 +60,15 @@ class DM(commands.Cog):
                         thread_data = (thread_id, anon_sender, receiver)
                         message_data = (thread_id, message_id,
                                         anon_sender, message)
-                        c.execute(
-                            'INSERT INTO threads VALUES (null,?,?,?)', thread_data)
-                        c.execute(
-                            'INSERT INTO messages VALUES (?,?,?,?)', message_data)
+                        c.execute('INSERT INTO threads VALUES (null,?,?,?)', thread_data)
+                        c.execute('INSERT INTO messages VALUES (?,?,?,?)', message_data)
                         conn.commit()
 
                         embed = discord.Embed(
                             title='Anonymous message received!', color=0x267d28,
                             description=f'Reply with `!reply {thread_id} <msg>`')
-                        embed.add_field(
-                            name='Thread ID:', value=thread_id, inline=True)
-                        embed.add_field(
-                            name='Message:', value=message, inline=True)
+                        embed.add_field(name='Thread ID:', value=thread_id, inline=True)
+                        embed.add_field(name='Message:', value=message, inline=True)
                         await user.send(embed=embed)
                         await ctx.send(f'Sent! :mailbox_with_mail:\nThread ID: {thread_id}')
                     else:

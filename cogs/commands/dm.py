@@ -39,9 +39,9 @@ class DM(commands.Cog):
                     user_setting = c.execute(
                         f'SELECT allow_anon_messages FROM userOptions WHERE user_id={user.id}').fetchone()[0]
                 except TypeError:
-                    user_setting = 0
+                    user_setting = 1
 
-                if user_setting is 1:
+                if user_setting:
                     receiver = user.id
                     anon_sender = ctx.author.id
                     message_id = 1

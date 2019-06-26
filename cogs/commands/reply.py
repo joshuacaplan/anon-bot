@@ -37,8 +37,9 @@ class Reply(commands.Cog):
                     'INSERT INTO messages VALUES (?,?,?,?)', message_data)
                 conn.commit()
 
+                embed_title = f'{user} replied to your message!' if receiver_id == user.id else 'You got another message'
                 embed = discord.Embed(
-                    title='Your message was replied to!', color=0x267d28,
+                    title=embed_title, color=0x267d28,
                     description=f'Use `!reply {thread_id} <msg>` to respond')
                 embed.add_field(
                     name='Thread ID:', value=thread_id, inline=True)

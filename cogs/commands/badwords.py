@@ -22,7 +22,7 @@ class Badwords(commands.Cog):
             word_data = (word, server_id)
             c.execute(
                 'INSERT INTO guildFilters VALUES(?,?)',word_data)
-                await ctx.send("Word added to filter list!")
+            await ctx.send("Word added to filter list!")
 
             
 def setup(bot):

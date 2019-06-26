@@ -18,8 +18,8 @@ class Reply(commands.Cog):
             try:
                 conn = sqlite3.connect('anon.db')
                 c = conn.cursor()
-                args = ctx.message.content.split(' ')
-                if len(args > 2):
+                args = ctx.message.content.split()
+                if len(args) > 2:
                     thread_id, message = args[1], ' '.join(args[2:])
                     user = ctx.author
                     receiver_id = c.execute(

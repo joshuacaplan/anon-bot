@@ -13,13 +13,13 @@ class Help(commands.Cog):
         embed.add_field(
             name='dm', value='Sends a direct message to a user', inline=True)
         embed.add_field(
-            name='Usage:', value="!dm 'name' 'message'", inline=True)
+            name='Usage:', value="!dm 'username#0000' 'message'", inline=True)
 
         # Reply Command
         embed.add_field(
             name='reply', value='Replies a message you received', inline=True)
         embed.add_field(
-            name='Usage', value="!reply 'id/username' 'message'", inline=True)
+            name='Usage', value="!reply 'thread id' 'message'", inline=True)
 
         # Enable Messages Command
         embed.add_field(

@@ -1,8 +1,8 @@
 import discord
 import sqlite3
 from discord.ext import commands
-
 from random import randint
+from Globals import *
 
 
 class DM(commands.Cog):
@@ -20,7 +20,21 @@ class DM(commands.Cog):
                 c = conn.cursor()
                 args = ctx.message.content.split(' ')
                 user, message = args[1], ' '.join(args[2:])
-                user = discord.utils.get(self.bot.users, name=user)
+
+                # checks if user id was supplied
+                if user.isdigit():
+                    user = discord.utils.get(self.bot.users, id=user)
+                else:
+                    # nope, user is a string. check if it includes a discriminator for accuracy
+                    # remove any @ if there is one..
+                    if user[0] == '@':
+                        user = user.replace('@', '')
+                    if '#' in user:
+                        user = discord.utils.get(
+                            self.bot.users, name=user[:-5], discriminator=user[-4:])
+                    else:
+                        # searching for a user just with a name is inaccurate.
+                        raise AttributeError
 
                 # check if user has anonymous messaging enabled
                 try:
@@ -38,7 +52,7 @@ class DM(commands.Cog):
                     while True:
                         try:
                             thread_id = ''.join((str(randint(0, 9))
-                                                 for _ in range(10)))
+                                                 for _ in range(thread_id_maximum)))
                             c.execute(
                                 f'SELECT receiver FROM threads WHERE thread_id={thread_id}')
                             # if no rows exist, break out of regen loop

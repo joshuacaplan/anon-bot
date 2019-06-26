@@ -4,6 +4,8 @@ from discord.ext import commands
 from random import randint
 from Globals import *
 
+class BadWord(Exception):
+    pass
 
 class DM(commands.Cog):
     def __init__(self, bot):
@@ -19,7 +21,14 @@ class DM(commands.Cog):
                 conn = sqlite3.connect('anon.db')
                 c = conn.cursor()
                 args = ctx.message.content.split(' ')
+                server_id = ctx.message.guild
                 user, message = args[1], ' '.join(args[2:])
+                words = list(c.execute(f'SELECT words FROM guildFilters WHERE server_id ={server_id}').fetchall())
+                for word in words:
+                    if message.find(word):
+                        raise BadWord
+
+                        
 
                 # checks if user id was supplied
                 if user.isdigit():
@@ -83,6 +92,8 @@ class DM(commands.Cog):
                     await ctx.send(f'{user.name} is not accepting anonymous messages at this time.')
             except AttributeError:
                 await ctx.send(f'A user with that name could not be found. Names are case specific.')
+            except BadWord:
+                await ctx.send(f'blah blah your message has bad word: {bad_word}')
             conn.close()
 
 

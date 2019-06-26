@@ -15,16 +15,14 @@ class Badwords(commands.Cog):
             conn = sqlite3.connect('anon.db')
             c = conn.cursor()
             server_id = ctx.message.guild
-            words = []
             args = ctx.message.content.split(' ')
             word = args[1]
-            words.append(word)
             
             # insert data
-            word_data = (words, server_id)
+            word_data = (word, server_id)
             c.execute(
                 'INSERT INTO guildFilters VALUES(?,?)',word_data)
-                await ctx.send("Word added to filter list!")
+            await ctx.send("Word added to filter list!")
 
             
 def setup(bot):

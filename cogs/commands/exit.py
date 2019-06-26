@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from Globals import *
+from Globals import bot_owners
 
 import os
 

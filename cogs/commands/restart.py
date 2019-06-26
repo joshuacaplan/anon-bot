@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from subprocess import Popen
 import os
-from Globals import *
+from Globals import bot_owners
 
 my_user_id = int(os.environ['my_user_id']) or 0
 

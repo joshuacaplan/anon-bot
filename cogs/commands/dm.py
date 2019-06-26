@@ -20,12 +20,10 @@ class DM(commands.Cog):
                 c = conn.cursor()
                 args = ctx.message.content.split(' ')
                 
-
                 if len(args) > 2:
                     user, message = args[1], ' '.join(args[2:])
                     # checks if a user id was supplied
-                    if user.isdigit():
-                        user = discord.utils.get(self.bot.users, id=user)
+                    if user.isdigit(): user = discord.utils.get(self.bot.users, id=user)
                     else:
                         # nope, user is a string. check if it includes a discriminator for accuracy
                         # remove any @ if there is one

@@ -26,16 +26,14 @@ class Report(commands.Cog):
                     f'SELECT report_channel_id FROM guildOptions WHERE guild_id={ctx.guild.id}').fetchone()[0]
 
                 if report_channel_id is not None:
-                    report_channel = discord.utils.get(
-                        ctx.guild.text_channels, id=report_channel_id)
+                    report_channel = discord.utils.get(ctx.guild.text_channels, id=report_channel_id)
                 else:
                     await ctx.send(f'Report channel has not been set up! Message a server administrator to have one set.')
                     await ctx.message.delete()
 
                 # insert report data
                 report_data = (thread_id, anon_id, reporter, details)
-                c.execute(
-                    'INSERT INTO reports VALUES (null,?,?,?,?)', report_data)
+                c.execute('INSERT INTO reports VALUES (null,?,?,?,?)', report_data)
                 conn.commit()
 
                 embed = discord.Embed(
@@ -54,8 +52,7 @@ class Report(commands.Cog):
                     user = discord.utils.get(self.bot.users, id=user_id)
 
                     # add a field for each message
-                    embed.add_field(
-                        name=f'@{user.name}#{user.discriminator}:', value=message_content, inline=False)
+                    embed.add_field(name=f'@{user.name}#{user.discriminator}:', value=message_content, inline=False)
                 await report_channel.send(embed=embed)
                 await ctx.send('Report sent! :mailbox_with_mail:')
             else:

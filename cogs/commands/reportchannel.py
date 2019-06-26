@@ -9,7 +9,7 @@ class ReportChannel(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    @has_permissions(manage_channels=True)
+    # @has_permissions(manage_channels=True)  # bot does not need to create, edit, or delete channels
     async def reportchannel(self, ctx):
         try:
             conn = sqlite3.connect('anon.db')

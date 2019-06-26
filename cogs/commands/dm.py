@@ -27,14 +27,12 @@ class DM(commands.Cog):
                 else:
                     # nope, user is a string. check if it includes a discriminator for accuracy
                     # remove any @ if there is one..
-                    if user[0] == '@':
-                        user = user.replace('@', '')
+                    user = user.replace('@', '')
                     if '#' in user:
-                        user = discord.utils.get(
-                            self.bot.users, name=user[:-5], discriminator=user[-4:])
+                        user = discord.utils.get(self.bot.users, name=user[:-5], discriminator=user[-4:])
                     else:
-                        # searching for a user just with a name is inaccurate.
-                        raise AttributeError
+                        user = discord.utils.get(self.bot.users, name=user)
+                        # search for user by name, returns first match, people can use at disgrestion
 
                 # check if user has anonymous messaging enabled
                 try:

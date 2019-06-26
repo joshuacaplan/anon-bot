@@ -14,7 +14,7 @@ class ReportChannel(commands.Cog):
         try:
             conn = sqlite3.connect('anon.db')
             c = conn.cursor()
-            args = ctx.message.content.split(' ')
+            args = ctx.message.content.split()
             if len(args) > 1:
 
                 channel = args[1].replace('<', '').replace('#', '').replace('>', '')

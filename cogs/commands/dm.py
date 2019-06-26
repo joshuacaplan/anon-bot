@@ -18,7 +18,7 @@ class DM(commands.Cog):
             try:
                 conn = sqlite3.connect('anon.db')
                 c = conn.cursor()
-                args = ctx.message.content.split(' ')
+                args = ctx.message.content.split()
                 
                 if len(args) > 2:
                     user, message = args[1], ' '.join(args[2:])

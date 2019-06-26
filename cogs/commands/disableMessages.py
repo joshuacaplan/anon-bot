@@ -23,10 +23,11 @@ class DisableMessages(commands.Cog):
         except TypeError:
             user_setting = 0
 
+        # 0 is impossible to land in the database without a previous record
         if user_setting == 1:
-            user_setting = 0
+            user_data = (0, user)
             c.execute(
-                'UPDATE userOptions SET allow_anon_messages = ? WHERE user_id = ?', (user_setting, user))
+                'UPDATE userOptions SET allow_anon_messages = ? WHERE user_id = ?', user_data)
             conn.commit()
             await ctx.send('You are no longer allowing anonymous messages.')
         else:

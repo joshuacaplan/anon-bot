@@ -21,11 +21,18 @@ class EnableMessages(commands.Cog):
             user_setting = c.execute(
                 f'SELECT allow_anon_messages FROM userOptions WHERE user_id={user}').fetchone()[0]
         except TypeError:
-            user_setting = 0
+            user_setting = 2
+            # 2 is the value when data needs to be CREATED, not UPDATED.
 
-        if user_setting == 0:
+        if user_setting == 2:
             user_data = (user, 1)
             c.execute('INSERT INTO userOptions VALUES (null,?,?)', user_data)
+            conn.commit()
+            await ctx.send('You are now allowing anonymous messages.')
+        elif user_setting == 0:
+            user_data = (1, user)
+            c.execute(
+                'UPDATE userOptions SET allow_anon_messages = ? WHERE user_id = ?', user_data)
             conn.commit()
             await ctx.send('You are now allowing anonymous messages.')
         else:

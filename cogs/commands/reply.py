@@ -48,7 +48,7 @@ class Reply(commands.Cog):
                 await receiver.send(embed=embed)
                 await ctx.send('Reply sent! :mailbox_with_mail:')
             except AttributeError:
-                await ctx.send(f'Unknown message thread!')
+                await ctx.send(f'Invalid message thread!')
             conn.close()
 
 

@@ -6,6 +6,7 @@ import os
 from random import randint
 from Globals import prefix
 
+
 try:
     discord_api = os.environ['discord']
     my_user_id = 0

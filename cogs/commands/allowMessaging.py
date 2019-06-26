@@ -55,7 +55,7 @@ class AllowMessaging(commands.Cog):
             user_setting = 0
 
         # 0 is impossible to land in the database without a previous record
-        if user_setting == 1:
+        if user_setting:
             user_data = (0, user)
             c.execute(
                 'UPDATE userOptions SET allow_anon_messages = ? WHERE user_id = ?', user_data)

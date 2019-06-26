@@ -16,15 +16,18 @@ class Badwords(commands.Cog):
             c = conn.cursor()
             server_id = ctx.guild.id
             args = ctx.message.content.split(' ')
-            word = args[1]
+            if len(args) > 1:
+                word = args[1]
 
-            # insert data
-            word_data = (word, server_id)
-            c.execute(
-                'INSERT INTO guildFilters VALUES(?,?)', word_data)
-            conn.commit()
-            await ctx.send("Word added to filter list!")
-            conn.close()
+                # insert data
+                word_data = (word, server_id)
+                c.execute(
+                    'INSERT INTO guildFilters VALUES(?,?)', word_data)
+                conn.commit()
+                await ctx.send("Word added to filter list!")
+                conn.close()
+            else:
+                await ctx.send("You must have at least 1 argument in your command! Refer to !help for more information")
 
 
 def setup(bot):

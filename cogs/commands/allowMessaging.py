@@ -55,7 +55,7 @@ class AllowMessaging(commands.Cog):
             user_setting = 0
 
         # 0 is impossible to land in the database without a previous record
-        if user_setting == 1:
+        if user_setting:
             user_data = (0, user)
             c.execute(
                 'UPDATE userOptions SET allow_anon_messages = ? WHERE user_id = ?', user_data)
@@ -64,7 +64,23 @@ class AllowMessaging(commands.Cog):
         else:
             await ctx.send('Anonymous messages are already disabled!')
         conn.close()
+    
+    @commands.command(aliases=['status'])
+    async def anonstatus(self, ctx):
+        conn = sqlite3.connect('anon.db')
+        c = conn.cursor()
+        user = ctx.author.id
 
+        try:
+            user_setting = c.execute(
+                f'SELECT allow_anon_messages FROM userOptions WHERE user_id={user}').fetchone()[0]
+        except TypeError:
+            user_setting = 2
+        
+        if user_setting is 2:
+            await ctx.send("Anonymous messaging: **DISABLED**")
+        else:
+            await ctx.send("Anonymous messaging: **ENABLED**")
 
 def setup(bot):
     bot.add_cog(AllowMessaging(bot))

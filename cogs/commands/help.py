@@ -33,6 +33,12 @@ class Help(commands.Cog):
         embed.add_field(
             name='Usage', value="!disable", inline=True)
 
+        # Checks the status of anon messaging
+        embed.add_field(
+            name='status', value='Checks the status of anonymous messaging', inline=True)
+        embed.add_field(
+            name='Usage', value='!status', inline=True)
+
         # Report Command
         embed.add_field(
             name='report', value='Sends message info to mods', inline=True)

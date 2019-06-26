@@ -19,33 +19,36 @@ class Reply(commands.Cog):
                 conn = sqlite3.connect('anon.db')
                 c = conn.cursor()
                 args = ctx.message.content.split(' ')
-                thread_id, message = args[1], ' '.join(args[2:])
-                user = ctx.author
-                receiver_id = c.execute(
-                    f'SELECT receiver FROM threads WHERE thread_id={thread_id}').fetchone()[0]
-                if receiver_id == user.id:
+                if len(args > 2):
+                    thread_id, message = args[1], ' '.join(args[2:])
+                    user = ctx.author
                     receiver_id = c.execute(
-                        f'SELECT anon_sender FROM threads WHERE thread_id={thread_id}').fetchone()[0]
-                receiver = discord.utils.get(self.bot.users, id=receiver_id)
-                message_id = c.execute(
-                    f'SELECT max(message_id) FROM messages WHERE thread_id={thread_id}').fetchone()[0]
+                        f'SELECT receiver FROM threads WHERE thread_id={thread_id}').fetchone()[0]
+                    if receiver_id == user.id:
+                        receiver_id = c.execute(
+                            f'SELECT anon_sender FROM threads WHERE thread_id={thread_id}').fetchone()[0]
+                    receiver = discord.utils.get(self.bot.users, id=receiver_id)
+                    message_id = c.execute(
+                        f'SELECT max(message_id) FROM messages WHERE thread_id={thread_id}').fetchone()[0]
 
-                # insert data
-                # storing replies isn't necessary, but its there if needed
-                message_data = (thread_id, message_id + 1, user.id, message)
-                c.execute(
-                    'INSERT INTO messages VALUES (?,?,?,?)', message_data)
-                conn.commit()
+                    # insert data
+                    # storing replies isn't necessary, but its there if needed
+                    message_data = (thread_id, message_id + 1, user.id, message)
+                    c.execute(
+                        'INSERT INTO messages VALUES (?,?,?,?)', message_data)
+                    conn.commit()
 
-                embed = discord.Embed(
-                    title='Your message was replied to!', color=0x267d28,
-                    description=f'Use `!reply {thread_id} <msg>` to respond')
-                embed.add_field(
-                    name='Thread ID:', value=thread_id, inline=True)
-                embed.add_field(
-                    name='Message:', value=message, inline=True)
-                await receiver.send(embed=embed)
-                await ctx.send('Reply sent! :mailbox_with_mail:')
+                    embed = discord.Embed(
+                        title='Your message was replied to!', color=0x267d28,
+                        description=f'Use `!reply {thread_id} <msg>` to respond')
+                    embed.add_field(
+                        name='Thread ID:', value=thread_id, inline=True)
+                    embed.add_field(
+                        name='Message:', value=message, inline=True)
+                    await receiver.send(embed=embed)
+                    await ctx.send('Reply sent! :mailbox_with_mail:')
+                else:
+                    await ctx.send("You must have at least 2 arguments in your command! Refer to !help for more information.")
             except AttributeError:
                 await ctx.send(f'Unknown message thread!')
             conn.close()

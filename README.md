@@ -8,7 +8,7 @@ Send a direct message to the bot: `!dm {name} {message}`
 - [X] Create report system
 - [X] Create embeds for anon messages
 - [ ] Handle permissions
-- [ ] Create filter words that can be setup by mods
+- [ ] ~~Create filter words that can be setup by mods~~
 - [X] Allow users to opt in/out of receiving anonymous messages
 
 ## Discord Hack Week

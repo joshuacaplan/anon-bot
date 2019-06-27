@@ -1,11 +1,10 @@
 import discord
 from discord.ext import commands
 from Globals import bot_owners
-
 import os
 
-my_user_id = int(os.environ['my_user_id']) or 0
 
+my_user_id = int(os.environ['my_user_id']) or 0
 
 class Exit(commands.Cog):
     def __init__(self, bot):

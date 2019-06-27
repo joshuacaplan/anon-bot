@@ -6,7 +6,6 @@ import os
 from random import randint
 from Globals import prefix
 
-
 try:
     discord_api = os.environ['discord']
     my_user_id = 0
@@ -24,9 +23,6 @@ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(me
 logger.addHandler(handler)
 bot = commands.Bot(command_prefix=prefix)
 bot.remove_command('help')
-
-# bot.command()
-
 
 def format_cogs(cogs_dir='cogs'):
     from glob import glob

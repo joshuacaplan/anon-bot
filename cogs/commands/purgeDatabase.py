@@ -3,8 +3,8 @@ from discord.ext import commands
 from subprocess import Popen
 import os
 
-my_user_id = int(os.environ['my_user_id']) or 0
 
+my_user_id = int(os.environ['my_user_id']) or 0
 
 class PurgeDatabase(commands.Cog):
     def __init__(self, bot):

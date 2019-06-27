@@ -9,7 +9,7 @@ class ReportChannel(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    # @has_permissions(manage_channels=True)  # bot does not need to create, edit, or delete channels
+    @has_permissions(manage_channels=True)
     async def reportchannel(self, ctx):
         try:
             conn = sqlite3.connect('anon.db')
@@ -17,7 +17,8 @@ class ReportChannel(commands.Cog):
             args = ctx.message.content.split()
             if len(args) > 1:
 
-                channel = args[1].replace('<', '').replace('#', '').replace('>', '')
+                channel = args[1].replace('<', '').replace(
+                    '#', '').replace('>', '')
 
                 # check if report_channel_id is None, insert data as needed.
                 try:
@@ -28,14 +29,15 @@ class ReportChannel(commands.Cog):
                         'UPDATE guildOptions SET report_channel_id = ? WHERE guild_id = ?', (channel, ctx.guild.id))
                 except TypeError:
                     data = (ctx.guild.id, channel)
-                    c.execute('INSERT INTO guildOptions VALUES (null,?,?)', data)
+                    c.execute(
+                        'INSERT INTO guildOptions VALUES (null,?,?)', data)
 
                 conn.commit()
                 await ctx.send(f'Reports will be sent to <#{channel}>')
             else:
                 await ctx.send('You must have at least 1 argument in your command! Refer to !help for more information.')
         except AttributeError:
-            await ctx.send(f'Unknown channel.')
+            await ctx.send('Unknown channel.')
         conn.close()
 
 

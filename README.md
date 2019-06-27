@@ -7,9 +7,9 @@ Send a direct message to the bot: `!dm {name} {message}`
 - [X] SQLite support
 - [X] Create report system
 - [X] Create embeds for anon messages
-- [ ] Handle permissions
-- [ ] ~~Create filter words that can be setup by mods~~
+- [X] Handle permissions
 - [X] Allow users to opt in/out of receiving anonymous messages
+- [ ] ~~Create filter words that can be setup by mods~~
 
 ## Discord Hack Week
 The Anonymous Messanger Bot was created during Discord's Hack Week.

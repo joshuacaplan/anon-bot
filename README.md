@@ -13,6 +13,7 @@ Send a direct message to the bot: `!dm {name} {message}`
 
 ## Discord Hack Week
 The Anonymous Messanger Bot was created during Discord's Hack Week.
+Public Test Server Invite: https://discord.gg/5QAepqb
 
 Developers:
 * [LaughingLove (Satoshi#1337)](https://github.com/LaughingLove)

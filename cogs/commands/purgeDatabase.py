@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from subprocess import Popen
+from Globas import bot_owners
 import os
 
 

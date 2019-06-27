@@ -15,6 +15,8 @@ class Info(commands.Cog):
             name='Developers:', value="- Satoshi#1337\n- atom#0001\n- TheStrplum213#6169\n- eli#4591", inline=False)
         embed.add_field(
             name='GitHub', value='https://github.com/LaughingLove/anon-bot\nCreated during Discord Hack Week', inline=False)
+        embed.add_field(
+            name='Invite', value='https://discordapp.com/api/oauth2/authorize?client_id=592419608410193920&permissions=10240&scope=bot', inline=False)
         await ctx.send(embed=embed)
 
 

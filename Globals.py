@@ -14,6 +14,3 @@ bot_owners = [
     127638450437488651,
     173459759779807233
 ]
-
-# if we choose to use it:
-#default_word_filter = []
